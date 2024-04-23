@@ -1,0 +1,6 @@
+(Event type/name): GRB 230828A
+(Peak time (UTC)): 2023-08-28 16:29:52.6
+(T90 [s]): 140
+(Peak count rate [cnt/s]): 107.0
+(Band [keV]): ~80-950
+(S/N [sigma]): 26.8

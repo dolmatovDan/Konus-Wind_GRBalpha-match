@@ -1,0 +1,6 @@
+(Event type/name): GRB 231215A
+(Peak time (UTC)): 2023-12-15 09:47:26.6
+(T90 [s]): 16
+(Peak count rate [cnt/s]): 429.0
+(Band [keV]): ~80-950
+(S/N [sigma]): 42.2

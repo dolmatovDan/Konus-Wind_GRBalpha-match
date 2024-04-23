@@ -1,0 +1,6 @@
+(Event type/name): GRB 220826B
+(Peak time (UTC)): 2022-08-26 10:21:20.4
+(T90 [s]): 9
+(Peak count rate [cnt/s]): 37.5
+(Band [keV]): ~70-890
+(S/N [sigma]): 5.0

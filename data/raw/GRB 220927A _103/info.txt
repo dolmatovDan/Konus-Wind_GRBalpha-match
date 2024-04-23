@@ -1,0 +1,6 @@
+(Event type/name): GRB 220927A 
+(Peak time (UTC)): 2022-09-27 05:36:25.2
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 97.4
+(Band [keV]): ~70-370
+(S/N [sigma]): 19.7

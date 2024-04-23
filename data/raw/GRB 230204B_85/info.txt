@@ -1,0 +1,6 @@
+(Event type/name): GRB 230204B
+(Peak time (UTC)): 2023-02-04 21:47:02.9
+(T90 [s]): 207
+(Peak count rate [cnt/s]): 141.0
+(Band [keV]): ~70-890
+(S/N [sigma]): 25.1

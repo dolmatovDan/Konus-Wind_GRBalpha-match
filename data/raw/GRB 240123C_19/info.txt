@@ -1,0 +1,6 @@
+(Event type/name): GRB 240123C
+(Peak time (UTC)): 2024-01-23 23:12:36.5
+(T90 [s]): 2
+(Peak count rate [cnt/s]): 237.6
+(Band [keV]): ~80-950
+(S/N [sigma]): 12.3

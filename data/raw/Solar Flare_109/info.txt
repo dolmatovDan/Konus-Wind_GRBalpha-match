@@ -1,0 +1,6 @@
+(Event type/name): Solar Flare
+(Peak time (UTC)): 2022-08-16 00:08:38
+(T90 [s]): 60
+(Peak count rate [cnt/s]): 40.4
+(Band [keV]): ~70-890
+(S/N [sigma]): 11.4

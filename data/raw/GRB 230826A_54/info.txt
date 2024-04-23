@@ -1,0 +1,6 @@
+(Event type/name): GRB 230826A
+(Peak time (UTC)): 2023-08-26 19:32:44.6
+(T90 [s]): 18
+(Peak count rate [cnt/s]): 48.5
+(Band [keV]): ~80-950
+(S/N [sigma]): 8.3

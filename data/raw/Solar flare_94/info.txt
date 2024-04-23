@@ -1,0 +1,6 @@
+(Event type/name): Solar flare
+(Peak time (UTC)): 2022-11-11 11:39:32.2
+(T90 [s]): 45
+(Peak count rate [cnt/s]): 145.7
+(Band [keV]): ~70-890
+(S/N [sigma]): 14.4

@@ -1,0 +1,6 @@
+(Event type/name): Solar flare
+(Peak time (UTC)): 2023-02-11 15:45:57.9
+(T90 [s]): 59
+(Peak count rate [cnt/s]): 420.3
+(Band [keV]): ~70-890
+(S/N [sigma]): 78.8

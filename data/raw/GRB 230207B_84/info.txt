@@ -1,0 +1,6 @@
+(Event type/name): GRB 230207B
+(Peak time (UTC)): 2023-02-07 04:40:47.9
+(T90 [s]): 10
+(Peak count rate [cnt/s]): 319.7
+(Band [keV]): ~70-890
+(S/N [sigma]): 25.0

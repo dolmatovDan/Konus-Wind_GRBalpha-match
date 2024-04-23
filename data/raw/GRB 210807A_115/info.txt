@@ -1,0 +1,6 @@
+(Event type/name): GRB 210807A
+(Peak time (UTC)): 2021-08-07 10:06:00
+(T90 [s]): >80
+(Peak count rate [cnt/s]): 47.4
+(Band [keV]): ~70-370
+(S/N [sigma]): 8.0

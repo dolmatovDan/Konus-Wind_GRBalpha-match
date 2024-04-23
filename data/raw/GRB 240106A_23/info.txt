@@ -1,0 +1,6 @@
+(Event type/name): GRB 240106A
+(Peak time (UTC)): 2024-01-06 00:36:36.8
+(T90 [s]): 148
+(Peak count rate [cnt/s]): 113.4
+(Band [keV]): ~80-950
+(S/N [sigma]): 16.2

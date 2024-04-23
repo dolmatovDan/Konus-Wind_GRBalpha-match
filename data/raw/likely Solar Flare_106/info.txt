@@ -1,0 +1,6 @@
+(Event type/name): likely Solar Flare
+(Peak time (UTC)): 2022-09-04 12:13:29.3
+(T90 [s]): 12
+(Peak count rate [cnt/s]): 44.0
+(Band [keV]): ~70-890
+(S/N [sigma]): 8.6

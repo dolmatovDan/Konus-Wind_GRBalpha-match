@@ -1,0 +1,6 @@
+(Event type/name): GRB 211018A
+(Peak time (UTC)): 2021-10-18 22:29:34
+(T90 [s]): 112
+(Peak count rate [cnt/s]): 253.2
+(Band [keV]): ~70-630
+(S/N [sigma]): 45.1

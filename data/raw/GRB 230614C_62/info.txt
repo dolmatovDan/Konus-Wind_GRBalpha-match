@@ -1,0 +1,6 @@
+(Event type/name): GRB 230614C
+(Peak time (UTC)): 2023-06-14 10:10:32.6
+(T90 [s]): 6
+(Peak count rate [cnt/s]): 753.5
+(Band [keV]): ~90-950
+(S/N [sigma]): 43.7

@@ -1,0 +1,6 @@
+(Event type/name): GRB 230709C
+(Peak time (UTC)): 2023-07-09 17:38:26.3
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 160.3
+(Band [keV]): ~90-950
+(S/N [sigma]): 9.3

@@ -1,0 +1,6 @@
+(Event type/name): GRB 210822A
+(Peak time (UTC)): 2021-08-22 09:18:26
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 398.1
+(Band [keV]): ~70-370
+(S/N [sigma]): 46

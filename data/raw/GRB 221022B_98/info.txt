@@ -1,0 +1,6 @@
+(Event type/name): GRB 221022B
+(Peak time (UTC)): 2022-10-22 22:56:11.8
+(T90 [s]): 32
+(Peak count rate [cnt/s]): 170.5
+(Band [keV]): ~70-890
+(S/N [sigma]): 22.8

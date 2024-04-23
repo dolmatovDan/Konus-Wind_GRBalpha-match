@@ -1,0 +1,6 @@
+(Event type/name): GRB 231222B
+(Peak time (UTC)): 2023-12-22 07:26:04.0
+(T90 [s]): 5
+(Peak count rate [cnt/s]): 56.6
+(Band [keV]): ~80-950
+(S/N [sigma]): 6.2

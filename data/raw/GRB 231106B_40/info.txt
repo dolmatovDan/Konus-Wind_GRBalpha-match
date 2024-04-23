@@ -1,0 +1,6 @@
+(Event type/name): GRB 231106B
+(Peak time (UTC)): 2023-11-06 21:19:01.1
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 93.4
+(Band [keV]): ~80-950
+(S/N [sigma]): 6.8

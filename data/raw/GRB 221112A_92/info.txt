@@ -1,0 +1,6 @@
+(Event type/name): GRB 221112A
+(Peak time (UTC)): 2022-11-12 06:18:04.2
+(T90 [s]): 15
+(Peak count rate [cnt/s]): 39.6
+(Band [keV]): ~70-890
+(S/N [sigma]): 3.4

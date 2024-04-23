@@ -1,0 +1,6 @@
+(Event type/name): maybe solar flare
+(Peak time (UTC)): 2022-12-29 18:19:44.4
+(T90 [s]): 163
+(Peak count rate [cnt/s]): 53.7
+(Band [keV]): ~70-890
+(S/N [sigma]): 12.7

@@ -1,0 +1,6 @@
+(Event type/name): Solar flare
+(Peak time (UTC)): 2024-02-22 22:29:09.4
+(T90 [s]): 402.5
+(Peak count rate [cnt/s]): 19079.4
+(Band [keV]): ~80-950
+(S/N [sigma]): 2057.4

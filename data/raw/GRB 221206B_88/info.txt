@@ -1,0 +1,6 @@
+(Event type/name): GRB 221206B
+(Peak time (UTC)): 2022-12-06 12:22:48.9
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 495.8
+(Band [keV]): ~70-890
+(S/N [sigma]): 35.8

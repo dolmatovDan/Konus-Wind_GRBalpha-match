@@ -1,0 +1,6 @@
+(Event type/name): GRB 211019A 
+(Peak time (UTC)): 2021-10-19 05:59:34
+(T90 [s]): 36
+(Peak count rate [cnt/s]): 229.1
+(Band [keV]): ~70-630
+(S/N [sigma]): 39.6

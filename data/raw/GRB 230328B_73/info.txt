@@ -1,0 +1,6 @@
+(Event type/name): GRB 230328B
+(Peak time (UTC)): 2023-03-28 14:54:48.9
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 220.0
+(Band [keV]): ~70-890
+(S/N [sigma]): 13.3

@@ -1,0 +1,6 @@
+(Event type/name): GRB 220829A
+(Peak time (UTC)): 2022-08-29 14:37:50.4
+(T90 [s]): 6
+(Peak count rate [cnt/s]): 123.6
+(Band [keV]): ~70-890
+(S/N [sigma]): 14.8

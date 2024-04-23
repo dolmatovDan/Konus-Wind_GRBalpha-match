@@ -1,0 +1,6 @@
+(Event type/name): GRB 230626A
+(Peak time (UTC)): 2023-06-26 14:30:29.2
+(T90 [s]): 14
+(Peak count rate [cnt/s]): 196.5
+(Band [keV]): ~80-950
+(S/N [sigma]): 18.9

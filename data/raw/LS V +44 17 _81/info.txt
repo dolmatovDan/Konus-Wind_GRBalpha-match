@@ -1,0 +1,6 @@
+(Event type/name): LS V +44 17 / RX J0440.9+4431
+(Peak time (UTC)): 2023-02-11 17:36:18.9
+(T90 [s]): 13
+(Peak count rate [cnt/s]): 45.7
+(Band [keV]): ~70-890
+(S/N [sigma]): 7.5

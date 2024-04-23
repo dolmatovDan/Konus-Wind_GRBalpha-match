@@ -1,0 +1,6 @@
+(Event type/name): GRB 240222A
+(Peak time (UTC)): 2024-02-22 08:51:30.9
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 82.2
+(Band [keV]): ~80-950
+(S/N [sigma]): 6.3

@@ -1,0 +1,6 @@
+(Event type/name): GRB 230604A
+(Peak time (UTC)): 2023-06-04 05:53:47.6
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 100.1
+(Band [keV]): ~80-950
+(S/N [sigma]): 6.6

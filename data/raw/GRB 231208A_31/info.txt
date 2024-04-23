@@ -1,0 +1,6 @@
+(Event type/name): GRB 231208A
+(Peak time (UTC)): 2023-12-08 02:29:45.5
+(T90 [s]): 3
+(Peak count rate [cnt/s]): 44.5
+(Band [keV]): ~80-950
+(S/N [sigma]): 5.0

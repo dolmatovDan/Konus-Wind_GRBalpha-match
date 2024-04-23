@@ -1,0 +1,6 @@
+(Event type/name): GRB 230911D
+(Peak time (UTC)): 2023-09-11 07:53:25.9
+(T90 [s]): 45
+(Peak count rate [cnt/s]): 515.3
+(Band [keV]): ~80-950
+(S/N [sigma]): 55.6

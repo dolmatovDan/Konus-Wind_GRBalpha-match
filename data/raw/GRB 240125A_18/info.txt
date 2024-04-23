@@ -1,0 +1,6 @@
+(Event type/name): GRB 240125A
+(Peak time (UTC)): 2024-01-25 09:34:59.6
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 58.1
+(Band [keV]): ~80-950
+(S/N [sigma]): 4.4

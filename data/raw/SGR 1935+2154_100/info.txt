@@ -1,0 +1,6 @@
+(Event type/name): SGR 1935+2154
+(Peak time (UTC)): 2022-10-14 17:27:39.8
+(T90 [s]): 16
+(Peak count rate [cnt/s]): 265.6
+(Band [keV]): ~70-890
+(S/N [sigma]): 51.5

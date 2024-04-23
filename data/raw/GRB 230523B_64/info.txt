@@ -1,0 +1,6 @@
+(Event type/name): GRB 230523B
+(Peak time (UTC)): 2023-05-23 15:23:54.0
+(T90 [s]): 1
+(Peak count rate [cnt/s]): 80.4
+(Band [keV]): ~80-950
+(S/N [sigma]): 4.9

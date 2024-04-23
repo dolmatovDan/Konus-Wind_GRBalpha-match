@@ -1,0 +1,6 @@
+(Event type/name): GRB 230320B
+(Peak time (UTC)): 2023-03-20 21:12:26.9
+(T90 [s]): 26
+(Peak count rate [cnt/s]): 241.1
+(Band [keV]): ~70-890
+(S/N [sigma]): 22.5

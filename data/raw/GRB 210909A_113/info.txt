@@ -1,0 +1,6 @@
+(Event type/name): GRB 210909A
+(Peak time (UTC)): 2021-09-09 10:43:19
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 50.5
+(Band [keV]): ~70-370
+(S/N [sigma]): 8.8

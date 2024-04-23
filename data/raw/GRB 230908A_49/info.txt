@@ -1,0 +1,6 @@
+(Event type/name): GRB 230908A
+(Peak time (UTC)): 2023-09-08 16:41:21.4
+(T90 [s]): 8
+(Peak count rate [cnt/s]): 556.2
+(Band [keV]): ~80-950
+(S/N [sigma]): 40.5
