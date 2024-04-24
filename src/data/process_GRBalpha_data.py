@@ -35,7 +35,7 @@ def main():
             event_name = "GRB"
         else:
             event_name = "Solar flare"
-        save_file_name = f"{save_folder}{event_name}/{folder}.thc"
+        save_file_name = f"{save_folder}{event_name}/{folder.strip()}.thc"
         with open(save_file_name, "w") as save_file:
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)
             print(
