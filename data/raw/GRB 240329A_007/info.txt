@@ -1,0 +1,6 @@
+(Event type/name): GRB 240329A
+(Peak time (UTC)): 2024-03-29 21:43:07.8
+(T90 [s]): 6.5
+(Peak count rate [cnt/s]): 176.9
+(Band [keV]): ~80-950
+(S/N [sigma]): 16.4

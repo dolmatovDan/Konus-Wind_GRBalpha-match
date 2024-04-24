@@ -1,0 +1,6 @@
+(Event type/name): GRB 240408B
+(Peak time (UTC)): 2024-04-08 00:10:03.8
+(T90 [s]): 44.5
+(Peak count rate [cnt/s]): 69.2
+(Band [keV]): ~80-950
+(S/N [sigma]): 8.4

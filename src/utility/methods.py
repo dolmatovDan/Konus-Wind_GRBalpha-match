@@ -34,3 +34,12 @@ def clear_name(name):
         return name
     pos = name.find("/")
     return name[:pos]
+
+
+def read_text_file(name):
+    with open(name, "r") as f:
+        return f.read()
+
+
+def convert_raw_to_interim(data):
+    return [s.strip() for s in data.split("  ") if len(s)]
