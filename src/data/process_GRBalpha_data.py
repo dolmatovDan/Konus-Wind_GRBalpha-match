@@ -15,8 +15,9 @@ def main():
     data_folder = "../../data/raw/"
     save_folder = "../../data/interim/"
 
-    for folder in os.listdir(data_folder):
+    for index, folder in enumerate(os.listdir(data_folder)):
         current_folder = data_folder + folder
+
         str_data = read_text_file(f"{current_folder}/data.txt").split("\\n")
         headers = [
             "start_time",
@@ -36,6 +37,7 @@ def main():
         else:
             event_name = "Solar flare"
         save_file_name = f"{save_folder}{event_name}/{folder.strip()}.thc"
+
         with open(save_file_name, "w") as save_file:
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)
             print(
@@ -53,12 +55,38 @@ def main():
                 file=save_file,
             )
             for data in data_splitted:
-                if len(data) != 9:
-                    continue
-                print(
-                    f"{float(data[2]):>14f}      {float(data[4]) + float(data[5]):>10f}      {float(data[6]) + float(data[7]):>10f}",
-                    file=save_file,
-                )
+                if len(data) == 9:  # Example: ../../data/raw/GRB 221206B_099/data.txt
+                    count_rate_70_370 = float(data[4]) + float(data[5])
+                    count_rate_400_950 = float(data[6]) + float(data[7])
+                    print(
+                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        file=save_file,
+                    )
+                elif (
+                    len(data) == 18
+                ):  # Example: ../../data/raw/GRB 221009A_113/data.txt
+                    count_rate_70_370 = sum(list(map(float, data[4:]))[:5])
+                    count_rate_400_950 = sum(list(map(float, data[4:]))[5:-1])
+                    print(
+                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        file=save_file,
+                    )
+                elif len(data) == 8:  # Example: ../../data/raw/GRB 211018A_123/data.txt
+                    count_rate_70_370 = sum(list(map(float, data[4:]))[:2])
+                    count_rate_400_950 = list(map(float, data[4:]))[2]
+                    print(
+                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        file=save_file,
+                    )
+                elif (
+                    len(data) == 12
+                ):  # Example: ../../data/raw/GRB 220826B_119/data.txt
+                    count_rate_70_370 = sum(list(map(float, data[4:]))[:3])
+                    count_rate_400_950 = sum(list(map(float, data[4:]))[3:-1])
+                    print(
+                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        file=save_file,
+                    )
 
 
 if __name__ == "__main__":
