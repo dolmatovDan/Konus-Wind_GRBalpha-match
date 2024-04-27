@@ -12,13 +12,13 @@ def parse_event_name(folder_name):
 
 
 def main():
-    data_folder = "../../data/raw/"
-    save_folder = "../../data/interim/"
+    data_folder = "../../data/raw/GRBalpha/"
+    save_folder = "../../data/interim/GRBalpha/"
 
     for index, folder in enumerate(os.listdir(data_folder)):
-        current_folder = data_folder + folder
+        current_folder = os.path.join(data_folder, folder)
 
-        str_data = read_text_file(f"{current_folder}/data.txt").split("\\n")
+        str_data = read_text_file(os.path.join(current_folder, "data.txt")).split("\n")
         headers = [
             "start_time",
             "end_time",
@@ -36,13 +36,13 @@ def main():
             event_name = "GRB"
         else:
             event_name = "Solar flare"
-        save_file_name = f"{save_folder}{event_name}/{folder.strip()}.thc"
+        save_file_name = os.path.join(save_folder, event_name, f"{folder.strip()}.thc")
 
         with open(save_file_name, "w") as save_file:
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)
             print(
                 "{:>14}      {:>10}      {:>10}".format(
-                    "sec_from_start", "80-400keV", "400-950keV"
+                    "sec_from_start", "~80-400keV", "~400-950keV"
                 ),
                 file=save_file,
             )

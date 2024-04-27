@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-DATES_PATH = "../../data/dates.txt"
+DATES_PATH = ""
 SAVE_FOLDER_PATH = ""
 
 

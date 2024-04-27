@@ -1,4 +1,5 @@
 import sys
+import os
 import requests
 from bs4 import BeautifulSoup as bs
 
@@ -39,12 +40,14 @@ def main():
         peak_time = columns[1].string
 
         event_type = event_name.split()[0]
-        data_folder = "../../data/raw/"
-        current_folder = f"{data_folder}{clear_name(event_name)}_{index:03d}/"
+        data_folder = "../../data/raw/GRBalpha"
+        current_folder = os.path.join(
+            data_folder, f"{clear_name(event_name)}_{index:03d}"
+        )
 
         create_folder(current_folder)
 
-        with open(f"{current_folder}info.txt", "w") as info_file:
+        with open(os.path.join(current_folder, "info.txt"), "w") as info_file:
             info_columns = [0, 1, 2, 3, 4, 5]
             for column in info_columns:
                 print(f"({headers[column]}): {columns[column].string}", file=info_file)
@@ -52,10 +55,11 @@ def main():
         for link in row.find_all("a"):
             full_url = baseurl + str(link.get("href"))
             if full_url.endswith(".txt"):
-                print(full_url)
+                # print(full_url)
                 link = requests.get(full_url)
-                with open(f"{current_folder}data.txt", "w") as save_file:
-                    save_file.write(str(link.content))
+                with open(os.path.join(current_folder, "data.txt"), "w") as save_file:
+                    print(link.content.decode("utf-8"), file=save_file)
+                break
 
 
 if __name__ == "__main__":
