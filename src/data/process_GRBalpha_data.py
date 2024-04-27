@@ -16,6 +16,7 @@ def main():
     save_folder = "../../data/interim/GRBalpha/"
 
     for index, folder in enumerate(os.listdir(data_folder)):
+
         current_folder = os.path.join(data_folder, folder)
 
         str_data = read_text_file(os.path.join(current_folder, "data.txt")).split("\n")
@@ -41,17 +42,17 @@ def main():
         with open(save_file_name, "w") as save_file:
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)
             print(
-                "{:>14}      {:>10}      {:>10}".format(
+                "{:>15}      {:>15}      {:>15}".format(
                     "sec_from_start", "~80-400keV", "~400-950keV"
                 ),
                 file=save_file,
             )
             print(
-                "{:>14}      {:>10}      {:>10}".format("---", "---", "---"),
+                "{:>15}      {:>15}      {:>15}".format("---", "---", "---"),
                 file=save_file,
             )
             print(
-                "{:>14}      {:>10}      {:>10}".format("(s)", "(cnt/s)", "(cnt/s)"),
+                "{:>15}      {:>15}      {:>15}".format("(s)", "(cnt/s)", "(cnt/s)"),
                 file=save_file,
             )
             for data in data_splitted:
@@ -59,7 +60,7 @@ def main():
                     count_rate_70_370 = float(data[4]) + float(data[5])
                     count_rate_400_950 = float(data[6]) + float(data[7])
                     print(
-                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        f"{float(data[2]):>15f}      {count_rate_70_370:>15f}      {count_rate_400_950:>15f}",
                         file=save_file,
                     )
                 elif (
@@ -68,14 +69,14 @@ def main():
                     count_rate_70_370 = sum(list(map(float, data[4:]))[:5])
                     count_rate_400_950 = sum(list(map(float, data[4:]))[5:-1])
                     print(
-                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        f"{float(data[2]):>15f}      {count_rate_70_370:>15f}      {count_rate_400_950:>15f}",
                         file=save_file,
                     )
                 elif len(data) == 8:  # Example: ../../data/raw/GRB 211018A_123/data.txt
                     count_rate_70_370 = sum(list(map(float, data[4:]))[:2])
                     count_rate_400_950 = list(map(float, data[4:]))[2]
                     print(
-                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        f"{float(data[2]):>15f}      {count_rate_70_370:>15f}      {count_rate_400_950:>15f}",
                         file=save_file,
                     )
                 elif (
@@ -84,7 +85,14 @@ def main():
                     count_rate_70_370 = sum(list(map(float, data[4:]))[:3])
                     count_rate_400_950 = sum(list(map(float, data[4:]))[3:-1])
                     print(
-                        f"{float(data[2]):>14f}      {count_rate_70_370:>10f}      {count_rate_400_950:>10f}",
+                        f"{float(data[2]):>15f}      {count_rate_70_370:>15f}      {count_rate_400_950:>15f}",
+                        file=save_file,
+                    )
+                elif len(data) == 10:
+                    count_rate_70_370 = sum(list(map(float, data[4:]))[:5])
+                    count_rate_400_950 = sum(list(map(float, data[4:]))[3:-1])
+                    print(
+                        f"{float(data[2]):>15f}      {count_rate_70_370:>15f}      {count_rate_400_950:>15f}",
                         file=save_file,
                     )
 
