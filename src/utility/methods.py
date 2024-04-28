@@ -8,9 +8,11 @@ from datetime import timedelta
 def create_folder(name):
     if os.path.isdir(name):
         print(f"Folder {name} already exists")
+        return False
     else:
         path = name
         os.mkdir(path)
+        return True
 
 
 def get_folder_size(folder_name):
@@ -34,6 +36,9 @@ def get_folders_num(folder_name):
 
 
 def clear_name(name):
+    """
+    LS V +44 17 / RX J0440.9+4431 -> LS V +44 17
+    """
     if name.find("/") == -1:
         return name
     pos = name.find("/")
@@ -46,6 +51,12 @@ def read_text_file(name):
 
 
 def convert_raw_to_interim(data):
+    """
+    split("  "): 2023-10-01 03:22:23.850207   2023-10-01 03:22:24.850207 ->
+        -> ["2023-10-01 03:22:23.850207", "2023-10-01 03:22:24.850207"]
+                       ^                             ^
+                leave spaces
+    """
     return [s.strip() for s in data.split("  ") if len(s)]
 
 
@@ -75,7 +86,10 @@ def get_date_after_delta(date, delta):
 
 def transfrom_to_dateobj(date):
     if date.find(".") == -1:
+        # Means that num of seconds is integer
         return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+
+    # Means that num of seconds is float
     return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
 
 

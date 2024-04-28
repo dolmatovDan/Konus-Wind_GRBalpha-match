@@ -11,17 +11,20 @@ from utility import (
     parse_date,
     transfrom_to_dateobj,
     seconds_between_dates,
+    clear_name,
 )
 
 
 def parse_GRBalpha_data(path):
     str_data = read_text_file(path).split("\n")
     date = str_data[0][str_data[0].find(":") + 2 :]
-    lst_data = [list(map(float, s.split())) for s in str_data[4:] if len(s)]
-    x = np.array([s[0] for s in lst_data])
-    y1 = np.array([s[1] for s in lst_data])
-    y2 = np.array([s[2] for s in lst_data])
+    lst_data = [list(map(float, s.split())) for s in str_data[6:] if len(s)]
+
+    x = np.array([s[0] for s in lst_data])  # Time
+    y1 = np.array([s[1] for s in lst_data])  # Count rate in ~80-400keV
+    y2 = np.array([s[2] for s in lst_data])  # Count rate in ~400-950keV
     Y = np.array([y1, y2])
+
     return date, x, Y
 
 
@@ -29,28 +32,30 @@ def parse_KW_data(path):
     str_data = read_text_file(path).split("\n")
     date = str_data[0][str_data[0].find(":") + 2 :]
     lst_data = [list(map(float, s.split())) for s in str_data[4:] if len(s)]
-    x = np.array([s[0] for s in lst_data])
 
-    y1 = np.array([s[1] for s in lst_data])
-    y2 = np.array([s[3] for s in lst_data])
+    x = np.array([s[0] for s in lst_data])  # Time
+
+    y1 = np.array([s[1] for s in lst_data])  # Count rate in ~80-400keV for S1
+    y2 = np.array([s[3] for s in lst_data])  # Count rate in ~80-400keV for S2
     Y1 = np.array([y1, y2])
 
-    y1 = np.array([s[2] for s in lst_data])
-    y2 = np.array([s[4] for s in lst_data])
+    y1 = np.array([s[2] for s in lst_data])  # Count rate in ~400-950keV for S1
+    y2 = np.array([s[4] for s in lst_data])  # Count rate in ~400-950keV for S2
     Y2 = np.array([y1, y2])
+
     return date, x, Y1, Y2
 
 
 def plot_data(ax, x1, Y1, x2, y2, legends, titles, date):
     # Y: [KW S1, KW S2, GRBalpha]
 
-    ax.plot(x1, Y1[0], label=legends[0])
-    ax.plot(x1, Y1[1], label=legends[1])
+    ax.step(x1, Y1[0], label=legends[0])
+    ax.step(x1, Y1[1], label=legends[1])
     ax.grid(False)
 
     twin = ax.twinx()
     twin.grid(False)
-    twin.plot(x2, y2, c="green", label=legends[2])
+    twin.step(x2, y2, c="green", label=legends[2])
 
     ax.set_xlabel(f"seconds since {date} UT")
     ax.set_ylabel(titles[0])
@@ -76,11 +81,10 @@ def get_nearest_date(date):
 
 
 def draw_match(GRBalpha_path, save_folder):
-    GRBalpha_path = "../../data/interim/GRBalpha/GRB"
     for index, file in enumerate(os.listdir(GRBalpha_path)):
         path = os.path.join(GRBalpha_path, file)
         line = read_text_file(path).split("\n")[0]
-        GRBalpha_date = line[line.find(":") + 2 :]
+        GRBalpha_date = line[line.find(":") + 2 :].strip()
 
         nearst_date_path = get_nearest_date(GRBalpha_date)
         KW_date, KW_x, KW_Y1, KW_Y2 = parse_KW_data(nearst_date_path)
@@ -111,7 +115,13 @@ def draw_match(GRBalpha_path, save_folder):
             ["KW G3", "GRBalpha rate_2 + rate_3"],
             GRBalpha_date,
         )
-        fig.savefig(os.path.join(save_folder, f"{index}.png"))
+
+        line = read_text_file(path).split("\n")[1]
+        GRBalpha_name = line[line.find(":") + 2 :].strip()
+
+        fig.savefig(
+            os.path.join(save_folder, f"{index:03d}_{clear_name(GRBalpha_name)}.png")
+        )
         plt.close()
 
 

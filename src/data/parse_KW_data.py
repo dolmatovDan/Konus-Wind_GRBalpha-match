@@ -14,16 +14,16 @@ def parse_dates(folder):
     files = os.listdir(folder)
     res_dates = []
     for file in files:
-        with open(folder + file, "r") as f_in:
-            str_date = f_in.readlines()[0]
+        with open(os.path.join(folder, file), "r") as f_in:
+            str_date = f_in.readlines()[2]
             date = str_date[str_date.find(":") + 2 :].strip()
             res_dates.append(date)
     return res_dates
 
 
 def get_dates():
-    folder_GRB = "../../data/interim/GRB/"
-    folder_Solar_flare = "../../data/interim/Solar flare/"
+    folder_GRB = "../../data/interim/GRBalpha/GRB"
+    folder_Solar_flare = "../../data/interim/GRBalpha/Solar flare"
     dates = parse_dates(folder_GRB) + parse_dates(folder_Solar_flare)
     save_file_name = "../../data/dates.txt"
     with open(save_file_name, "w") as save_file:
