@@ -1,6 +1,7 @@
 (Start time): 2023-05-23 15:22:12.541981
 (Event name): GRB 230523B
 (Event time): 2023-05-23 15:23:54.0
+(T90): 1
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

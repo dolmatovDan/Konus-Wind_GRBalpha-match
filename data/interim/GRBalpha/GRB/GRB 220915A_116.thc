@@ -1,6 +1,7 @@
 (Start time): 2022-09-15 05:12:00.885081
 (Event name): GRB 220915A
 (Event time): 2022-09-15 05:13:42.8
+(T90): 12
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

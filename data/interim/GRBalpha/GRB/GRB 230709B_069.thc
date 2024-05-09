@@ -1,6 +1,7 @@
 (Start time): 2023-07-09 16:54:34.793916
 (Event name): GRB 230709B
 (Event time): 2023-07-09 16:56:15.3
+(T90): 6
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

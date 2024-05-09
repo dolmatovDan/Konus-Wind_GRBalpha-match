@@ -1,6 +1,7 @@
 (Start time): 2022-11-27 08:25:30.686114
 (Event name): GRB 221127A
 (Event time): 2022-11-27 08:27:10.2
+(T90): 3
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

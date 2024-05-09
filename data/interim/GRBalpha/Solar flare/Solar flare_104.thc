@@ -1,6 +1,7 @@
 (Start time): 2022-11-11 13:47:30.685518
 (Event name): Solar flare
 (Event time): 2022-11-11 13:49:12.2
+(T90): 10
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

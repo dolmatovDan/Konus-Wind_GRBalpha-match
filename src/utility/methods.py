@@ -3,16 +3,16 @@ import os
 import time
 from dateutil import parser
 from datetime import timedelta
+import numpy as np
 
 
 def create_folder(name):
     if os.path.isdir(name):
         print(f"Folder {name} already exists")
         return False
-    else:
-        path = name
-        os.mkdir(path)
-        return True
+    path = name
+    os.mkdir(path)
+    return True
 
 
 def get_folder_size(folder_name):
@@ -98,3 +98,13 @@ def seconds_between_dates(str_dt1, str_dt2):
     dt2 = transfrom_to_dateobj(str_dt2)
     delta = (dt1 - dt2).total_seconds()
     return delta
+
+
+def erase_nan(arr):
+    return arr[~np.isnan(arr)]
+
+
+def get_min_max(arr):
+    arr_sorted = sorted(erase_nan(arr))
+    d = int(len(arr) * 0.025)
+    return arr_sorted[d], arr_sorted[-d]

@@ -1,6 +1,7 @@
 (Start time): 2024-03-31 23:53:40.087971
 (Event name): GRB 240331A
 (Event time): 2024-03-31 23:55:19.3
+(T90): 9.5
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

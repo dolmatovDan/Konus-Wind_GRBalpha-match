@@ -1,6 +1,7 @@
 (Start time): 2021-09-09 10:41:53
 (Event name): GRB 210909A
 (Event time): 2021-09-09 10:43:19
+(T90): 8
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

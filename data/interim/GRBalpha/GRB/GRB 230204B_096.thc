@@ -1,6 +1,7 @@
 (Start time): 2023-02-04 21:42:47.376597
 (Event name): GRB 230204B
 (Event time): 2023-02-04 21:47:02.9
+(T90): 207
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

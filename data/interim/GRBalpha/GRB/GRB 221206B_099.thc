@@ -1,6 +1,7 @@
 (Start time): 2022-12-06 12:21:07.395696
 (Event name): GRB 221206B
 (Event time): 2022-12-06 12:22:48.9
+(T90): 8
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

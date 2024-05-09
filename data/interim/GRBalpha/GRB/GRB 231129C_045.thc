@@ -1,6 +1,7 @@
 (Start time): 2023-11-29 19:09:28.539022
 (Event name): GRB 231129C
 (Event time): 2023-11-29 19:10:19.0
+(T90): 6
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

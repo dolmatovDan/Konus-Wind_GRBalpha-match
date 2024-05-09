@@ -1,6 +1,7 @@
 (Start time): 2023-06-14 10:08:52.081747
 (Event name): GRB 230614C
 (Event time): 2023-06-14 10:10:32.6
+(T90): 6
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

@@ -1,6 +1,7 @@
 (Start time): 2023-11-17 03:02:49.867467
 (Event name): GRB 231117A
 (Event time): 2023-11-17 03:03:19.4
+(T90): 1
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

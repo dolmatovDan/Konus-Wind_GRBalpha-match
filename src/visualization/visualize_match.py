@@ -18,7 +18,7 @@ from utility import (
 def parse_GRBalpha_data(path):
     str_data = read_text_file(path).split("\n")
     date = str_data[0][str_data[0].find(":") + 2 :]
-    lst_data = [list(map(float, s.split())) for s in str_data[6:] if len(s)]
+    lst_data = [list(map(float, s.split())) for s in str_data[7:] if len(s)]
 
     x = np.array([s[0] for s in lst_data])  # Time
     y1 = np.array([s[1] for s in lst_data])  # Count rate in ~80-400keV
@@ -46,18 +46,19 @@ def parse_KW_data(path):
     return date, x, Y1, Y2
 
 
-def plot_data(ax, x1, Y1, x2, y2, legends, titles, date):
+def plot_data(ax, x1, Y1, x2, y2, legends, titles, date, colors, is_xlabel):
     # Y: [KW S1, KW S2, GRBalpha]
 
-    ax.step(x1, Y1[0], label=legends[0])
-    ax.step(x1, Y1[1], label=legends[1])
+    ax.step(x1, Y1[0], label=legends[0], c=colors[0])
+    ax.step(x1, Y1[1], label=legends[1], c=colors[1])
     ax.grid(False)
 
     twin = ax.twinx()
     twin.grid(False)
-    twin.step(x2, y2, c="green", label=legends[2])
+    twin.step(x2, y2, label=legends[2], c=colors[2])
 
-    ax.set_xlabel(f"seconds since {date} UT")
+    if is_xlabel:
+        ax.set_xlabel(f"seconds since {date} UT")
     ax.set_ylabel(titles[0])
     twin.set_ylabel(titles[1])
 
@@ -103,6 +104,8 @@ def draw_match(GRBalpha_path, save_folder):
             ["KW S1", "KW S2", "GRBalpha"],
             ["KW G2", "GRBalpha rate_0 + rate_1"],
             GRBalpha_date,
+            ["red", "blue", "black"],
+            False,
         )
 
         plot_data(
@@ -114,6 +117,8 @@ def draw_match(GRBalpha_path, save_folder):
             ["KW S1", "KW S2", "GRBalpha"],
             ["KW G3", "GRBalpha rate_2 + rate_3"],
             GRBalpha_date,
+            ["red", "blue", "black"],
+            True,
         )
 
         line = read_text_file(path).split("\n")[1]
@@ -123,6 +128,38 @@ def draw_match(GRBalpha_path, save_folder):
             os.path.join(save_folder, f"{index:03d}_{clear_name(GRBalpha_name)}.png")
         )
         plt.close()
+
+
+def plot_data2(ax, x1, Y1, x2, y2, legends, titles, colors):
+    # Y: [KW S1, KW S2, GRBalpha]
+
+    ax.step(x1, Y1, where="post", label=legends[0], c=colors[0])
+    ax.grid(False)
+
+    twin = ax.twinx()
+    twin.grid(False)
+    twin.step(x2, y2, c=colors[1], where="post", label=legends[1])
+
+    ax.set_ylabel(titles[0])
+    twin.set_ylabel(titles[1])
+
+    ax.set_xlim(min(x2), max(x2))
+    h1, l1 = ax.get_legend_handles_labels()
+    h2, l2 = twin.get_legend_handles_labels()
+    ax.legend(h1 + h2, l1 + l2, loc="upper right")
+
+    twin.spines["left"].set_visible(False)
+
+    ax.yaxis.label.set_color(colors[0])
+    twin.yaxis.label.set_color(colors[1])
+
+    ax.spines["left"].set_color(colors[0])
+    twin.spines["right"].set_color(colors[1])
+
+    ax.tick_params(axis="y", colors=colors[0])
+    twin.tick_params(axis="y", colors=colors[1])
+
+    return twin
 
 
 def main():

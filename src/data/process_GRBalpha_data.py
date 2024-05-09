@@ -17,6 +17,12 @@ def parse_event_time(folder_name):
     return str_data[1][pos + 2 :]
 
 
+def parse_event_T90(folder_name):
+    str_data = read_text_file(f"{folder_name}/info.txt").split("\n")
+    pos = str_data[2].find(":")
+    return str_data[2][pos + 2 :]
+
+
 def main():
     data_folder = "../../data/raw/GRBalpha/"
     save_folder = "../../data/interim/GRBalpha/"
@@ -42,6 +48,8 @@ def main():
         full_name = event_name
         event_time = parse_event_time(current_folder)
 
+        T90 = parse_event_T90(current_folder)
+
         if event_name.split()[0] == "GRB":
             event_name = "GRB"
         else:
@@ -52,6 +60,7 @@ def main():
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)
             print(f"(Event name): {full_name}", file=save_file)
             print(f"(Event time): {event_time}", file=save_file)
+            print(f"(T90): {T90}", file=save_file)
             print(
                 "{:>15}      {:>15}      {:>15}".format(
                     "sec_from_start", "~80-400keV", "~400-950keV"

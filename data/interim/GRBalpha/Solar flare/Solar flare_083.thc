@@ -1,6 +1,7 @@
 (Start time): 2023-04-17 06:30:55.970578
 (Event name): Solar flare
 (Event time): 2023-04-17 06:32:49.5
+(T90): 30
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

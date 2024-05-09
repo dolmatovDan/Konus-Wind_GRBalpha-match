@@ -1,6 +1,7 @@
 (Start time): 2024-04-08 00:08:26.052323
 (Event name): GRB 240408B
 (Event time): 2024-04-08 00:10:03.8
+(T90): 44.5
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

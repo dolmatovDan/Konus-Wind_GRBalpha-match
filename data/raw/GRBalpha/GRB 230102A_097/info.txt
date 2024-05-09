@@ -1,7 +1,6 @@
 (Event type/name): GRB 230102A
 (Peak time (UTC)): 2023-01-02 00:22:13.0
-(T90 [s]): 
-
+(T90 [s]): <1
 (Peak count rate [cnt/s]): 78.6
 (Band [keV]): ~70-890
 (S/N [sigma]): 5.6

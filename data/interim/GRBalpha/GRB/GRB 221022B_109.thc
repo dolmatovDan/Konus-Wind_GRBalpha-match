@@ -1,6 +1,7 @@
 (Start time): 2022-10-22 22:54:29.767314
 (Event name): GRB 221022B
 (Event time): 2022-10-22 22:56:11.8
+(T90): 32
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

@@ -1,6 +1,7 @@
 (Start time): 2023-10-30 19:57:30.251474
 (Event name): GRB 231030B
 (Event time): 2023-10-30 19:58:20.8
+(T90): 21
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)

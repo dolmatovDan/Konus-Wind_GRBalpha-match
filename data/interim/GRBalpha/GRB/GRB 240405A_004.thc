@@ -1,6 +1,7 @@
 (Start time): 2024-04-05 15:06:16.837461
 (Event name): GRB 240405A
 (Event time): 2024-04-05 15:07:38.6
+(T90): 24.0
  sec_from_start           ~80-400keV          ~400-950keV
             ---                  ---                  ---
             (s)              (cnt/s)              (cnt/s)
