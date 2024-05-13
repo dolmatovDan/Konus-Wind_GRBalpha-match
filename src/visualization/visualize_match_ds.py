@@ -1,7 +1,9 @@
+import math
 import sys
 import os
 from matplotlib import pyplot as plt
 import datetime
+from matplotlib.ticker import MultipleLocator
 import numpy as np
 
 sys.path.append("..")
@@ -34,6 +36,37 @@ def parse_GRBalpha_data(path):
     Y = np.array([y1, y2])
 
     return date, x, Y, T90
+
+
+def get_delta(y_max, y_min):
+    lst_num = [1, 2, 5]
+    lst_minor = [0.5, 1, 1]
+    n = len(lst_num)
+    delta_y = lst_num[0]
+    delta_minor = lst_minor[0]
+
+    n_ticks = math.floor((y_max - y_min) / delta_y)
+
+    i = 0
+    while n_ticks > 4:
+        delta_y = lst_num[i % n] * 10 ** math.floor(i / n)
+        delta_minor = lst_minor[i % n] * 10 ** math.floor(i / n)
+        n_ticks = math.floor((y_max - y_min) / delta_y)
+        i = i + 1
+    return delta_y, delta_minor
+
+
+def set_yticks(y, ax):
+    max_y = max(y)
+    min_y = min(y)
+
+    delta, delta_minor = get_delta(max_y, min_y)
+    ax.yaxis.set_major_locator(MultipleLocator(delta))
+    ax.yaxis.set_minor_locator(MultipleLocator(delta_minor))
+
+    y_max = math.ceil(max_y / delta) * delta + delta / 2.0
+    y_min = math.floor(min_y / delta) * delta
+    ax.set_ylim(y_min, y_max)
 
 
 def parse_KW_data(path):
@@ -102,6 +135,9 @@ def plot_data(ax, x1, Y1, x2, y2, legends, titles, colors, backgrounds):
 
     ax.plot(x1, [backgrounds[0]] * len(x1), c=colors[0], linestyle=":")
     twin.plot(x1, [backgrounds[1]] * len(x1), c=colors[1], linestyle=":")
+
+    set_yticks(Y1, ax)
+    set_yticks(y2, twin)
 
     return twin
 
@@ -182,19 +218,6 @@ def draw_match(GRBalpha_path, save_folder):
         KW_S1_background = get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, 0)
         KW_S2_background = get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, 1)
 
-        """
-        Previous algorithm of choosing detector
-        max_S1G2 = np.max(KW_Y1[0])
-        max_S2G2 = np.max(KW_Y1[1])
-        idx_det = 0  # S1
-        det = "S1"
-        det_col = "r"
-        if max_S1G2 < max_S2G2:
-            idx_det = 1  # S2
-            det = "S2"
-            det_col = "b"
-        """
-
         idx_det = choose_det(KW_S1_background[0], KW_S2_background[0], KW_Y1)
 
         det = "S1"
@@ -208,7 +231,7 @@ def draw_match(GRBalpha_path, save_folder):
             GRBalpha_x, GRBalpha_Y, trig_time, T90
         )
         # print(KW_background)
-        print(GRBalpha_background)
+        # print(GRBalpha_background)
 
         fig, axis = plt.subplots(3, 1, figsize=(10, 15))
 
@@ -252,23 +275,10 @@ def draw_match(GRBalpha_path, save_folder):
 
         x_min, x_max = np.min(GRBalpha_x), np.max(GRBalpha_x)
         axis[2].set_xlim(x_min, x_max)
-        y_min, y_max = (
-            min(
-                np.min(erase_nan(KW_Y1[idx_det])), np.min(erase_nan(KW_Y1[1 - idx_det]))
-            ),
-            max(
-                np.max(erase_nan(KW_Y1[idx_det])), np.max(erase_nan(KW_Y1[1 - idx_det]))
-            ),
-        )
-        y_min = (y_min - 100) // 100 * 100
-        y_max = (y_max + 99) // 100 * 100
-        # print(y_min, y_max)
-        # dy = y_max - y_min
+        y_both = np.concatenate((KW_Y1[0], KW_Y1[1]))
 
-        # y_min_other = np.min(erase_nan(KW_Y1[1 - idx_det]))
-
-        twin.set_ylim(y_min, y_max)
-        axis[2].set_ylim(y_min, y_max)
+        set_yticks(y_both, axis[2])
+        set_yticks(y_both, twin)
 
         axis[0].set_title(f"{GRBalpha_name}, {GRBalpha_time}")
 
