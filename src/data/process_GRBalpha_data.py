@@ -2,25 +2,44 @@ import os
 import sys
 
 sys.path.append("..")
-from utility import read_text_file, convert_raw_to_interim, clear_name
+from utility import (
+    read_text_file,
+    convert_raw_to_interim,
+    seconds_between_dates,
+    transfrom_to_dateobj,
+    clear_name,
+)
 
 
 def parse_event_name(folder_name):
     str_data = read_text_file(f"{folder_name}/info.txt").split("\n")
     pos = str_data[0].find(":")
-    return str_data[0][pos + 2 :]
+    return str_data[0][pos + 2 :].strip()
 
 
 def parse_event_time(folder_name):
     str_data = read_text_file(f"{folder_name}/info.txt").split("\n")
     pos = str_data[1].find(":")
-    return str_data[1][pos + 2 :]
+    return str_data[1][pos + 2 :].strip()
 
 
 def parse_event_T90(folder_name):
     str_data = read_text_file(f"{folder_name}/info.txt").split("\n")
     pos = str_data[2].find(":")
-    return str_data[2][pos + 2 :]
+    return str_data[2][pos + 2 :].strip()
+
+
+def get_index(file, date):
+    str_data = read_text_file(file).split("\n")
+    min_delta = 2e15
+    nearest_index = -1
+    for index, cur_date in enumerate(str_data):
+        if not cur_date:
+            break
+        if abs(seconds_between_dates(date, cur_date)) < min_delta:
+            min_delta = abs(seconds_between_dates(date, cur_date))
+            nearest_index = index
+    return nearest_index
 
 
 def main():
@@ -51,10 +70,16 @@ def main():
         T90 = parse_event_T90(current_folder)
 
         if event_name.split()[0] == "GRB":
-            event_name = "GRB"
+            event_type = "GRB"
+            index = get_index("../../data/interim/GRBalpha/GRB_order.txt", event_time)
         else:
-            event_name = "Solar flare"
-        save_file_name = os.path.join(save_folder, event_name, f"{folder.strip()}.thc")
+            event_type = "Solar flare"
+            index = get_index(
+                "../../data/interim/GRBalpha/Solar flare_order.txt", event_time
+            )
+        save_file_name = os.path.join(
+            save_folder, event_type, f"{index:03d}_{clear_name(event_name).strip()}.thc"
+        )
 
         with open(save_file_name, "w") as save_file:
             print(f"(Start time): {data_splitted[0][0]}", file=save_file)

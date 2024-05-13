@@ -6,16 +6,16 @@ import datetime
 from matplotlib.ticker import MultipleLocator
 import numpy as np
 
+
 sys.path.append("..")
 
 from utility import (
     read_text_file,
     plot_settings,
     parse_date,
-    transfrom_to_dateobj,
     seconds_between_dates,
     clear_name,
-    erase_nan,
+    parse_file_name,
 )
 
 
@@ -281,9 +281,8 @@ def draw_match(GRBalpha_path, save_folder):
         set_yticks(y_both, twin)
 
         axis[0].set_title(f"{GRBalpha_name}, {GRBalpha_time}")
-
         fig.savefig(
-            os.path.join(save_folder, f"{index:03d}_{clear_name(GRBalpha_name)}.png"),
+            os.path.join(save_folder, f"{parse_file_name(file)}.png"),
             bbox_inches="tight",
         )
         plt.close()

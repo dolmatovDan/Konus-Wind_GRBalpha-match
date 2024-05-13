@@ -4,6 +4,7 @@ import time
 from dateutil import parser
 from datetime import timedelta
 import numpy as np
+from pathlib import Path
 
 
 def create_folder(name):
@@ -108,3 +109,8 @@ def get_min_max(arr):
     arr_sorted = sorted(erase_nan(arr))
     d = int(len(arr) * 0.025)
     return arr_sorted[d], arr_sorted[-d]
+
+
+def parse_file_name(file):
+    filename = Path(file).stem
+    return filename
