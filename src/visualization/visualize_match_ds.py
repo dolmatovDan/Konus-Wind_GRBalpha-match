@@ -104,7 +104,9 @@ def format_KW_data(x, Y1, Y2, t_start, t_end):
     return np.array(x_f), np.array(Y1_f), np.array(Y2_f)
 
 
-def plot_data(ax, x1, Y1, x2, y2, legends, titles, colors, backgrounds):
+def plot_data(
+    ax, x1, Y1, x2, y2, legends, titles, colors, backgrounds, name, limits_dict
+):
     # Y: [KW S1, KW S2, GRBalpha]
 
     ax.step(x1, Y1, where="post", label=legends[0], c=colors[0])
@@ -136,6 +138,10 @@ def plot_data(ax, x1, Y1, x2, y2, legends, titles, colors, backgrounds):
     ax.plot(x1, [backgrounds[0]] * len(x1), c=colors[0], linestyle=":")
     twin.plot(x1, [backgrounds[1]] * len(x1), c=colors[1], linestyle=":")
 
+    limits = limits_dict[name]
+    ax.set_xlim(limits[4], limits[5])
+    twin.set_xlim(limits[4], limits[5])
+
     set_yticks(Y1, ax)
     set_yticks(y2, twin)
 
@@ -155,22 +161,44 @@ def get_nearest_date(date):
     return res_file
 
 
-def get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, det):
-    mask = (trig_time - 550 < KW_x) & (KW_x < trig_time - 50)
+# def get_KW_background_calc_interval(trig_time):
+#     return max(0, trig_time - 550), max(0, trig_time - 50)
+
+
+def get_KW_background_calc_interval(name, limits_dict):
+    data = limits_dict[name]
+    return data[0], data[1]
+
+
+# def get_GRBalpha_background_calc_inerval(GRBalpha_x, Tpeak, T90):
+#     if np.sum(GRBalpha_x < Tpeak - T90) > np.sum(GRBalpha_x > Tpeak + T90):
+#         return 0, np.max(Tpeak - T90)
+#     return Tpeak + T90, np.max(GRBalpha_x)
+
+
+def get_GRBalpha_background_calc_inerval(name, limits_dict):
+    data = limits_dict[name]
+    return data[2], data[3]
+
+
+def get_plot_interval(GRBalpha_x):
+    return np.min(GRBalpha_x), np.max(GRBalpha_x)
+
+
+def get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, det, name, limits_dict):
+    low, high = get_KW_background_calc_interval(name, limits_dict)
+    mask = (low < KW_x) & (KW_x < high)
     return np.mean(KW_Y1[det][mask]), np.mean(KW_Y2[det][mask])
 
 
-def get_GRBalpha_background(GRBalpha_x, GRBalpha_Y, Tpeak, T90):
-    mask = 0
-    if np.sum(GRBalpha_x < Tpeak - T90) > np.sum(GRBalpha_x > Tpeak + T90):
-        mask = GRBalpha_x < Tpeak - T90
-    else:
-        mask = GRBalpha_x > Tpeak + T90
+def get_GRBalpha_background(GRBalpha_x, GRBalpha_Y, Tpeak, T90, name, limits_dict):
+    low, high = get_GRBalpha_background_calc_inerval(name, limits_dict)
+    mask = (low < GRBalpha_x) & (GRBalpha_x < high)
     return np.mean(GRBalpha_Y[0][mask]), np.mean(GRBalpha_Y[1][mask])
 
 
 def choose_det(S1_background, S2_background, KW_Y1):
-    # Use G2
+    # Use G2 energy range
     S1_max = np.max(KW_Y1[0])
     S2_max = np.max(KW_Y1[1])
     if S1_max - S1_background < S2_max - S2_background:
@@ -178,13 +206,35 @@ def choose_det(S1_background, S2_background, KW_Y1):
     return 0
 
 
-def draw_match(GRBalpha_path, save_folder):
+def write_plot_info(event_name, trig_time, GRBalpha_x, Tpeak, T90, save_file):
+    with open(save_file, "a") as file:
+        KW_interval = get_KW_background_calc_interval(trig_time)
+        GRBalpha_interval = get_GRBalpha_background_calc_inerval(GRBalpha_x, Tpeak, T90)
+        plot_interval = get_plot_interval(GRBalpha_x)
+        print(
+            f"{event_name:>20}",
+            f"{KW_interval[0]:15.4f}{KW_interval[1]:15.4f}",
+            f"{GRBalpha_interval[0]:15.4f}{GRBalpha_interval[1]:15.4f}",
+            f"{plot_interval[0]:15.4f}{plot_interval[1]:15.4f}",
+            file=file,
+            sep="",
+        )
+
+
+def draw_match(GRBalpha_path, save_folder, event):
+
+    limits_path = f"../../data/interim/tables/{event}_plot_info.txt"
+    str_limits_data = read_text_file(limits_path).split("\n")
+    lst_limits_data = [s.split() for s in str_limits_data[1:] if len(s)]
+    limits_dict = {}
+    for data in lst_limits_data:
+        limits_dict[data[0] + " " + data[1]] = list(map(float, data[2:]))
 
     for index, file in enumerate(os.listdir(GRBalpha_path)):
 
-        # if file != "GRB 230510B_079.thc":
-        #     continue
-        # print(file)
+        if file != "000_GRB 210807A.thc":
+            continue
+        print(file)
 
         path = os.path.join(GRBalpha_path, file)
 
@@ -193,6 +243,7 @@ def draw_match(GRBalpha_path, save_folder):
 
         line = read_text_file(path).split("\n")[1]
         GRBalpha_name = line[line.find(":") + 2 :].strip()
+        # print(f"({GRBalpha_name})")
 
         line = read_text_file(path).split("\n")[2]
         GRBalpha_time = line[line.find(":") + 2 :].strip()
@@ -215,8 +266,12 @@ def draw_match(GRBalpha_path, save_folder):
         if not len(KW_x):
             continue
 
-        KW_S1_background = get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, 0)
-        KW_S2_background = get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, 1)
+        KW_S1_background = get_KW_background(
+            KW_x, KW_Y1, KW_Y2, trig_time, 0, GRBalpha_name, limits_dict
+        )
+        KW_S2_background = get_KW_background(
+            KW_x, KW_Y1, KW_Y2, trig_time, 1, GRBalpha_name, limits_dict
+        )
 
         idx_det = choose_det(KW_S1_background[0], KW_S2_background[0], KW_Y1)
 
@@ -226,12 +281,41 @@ def draw_match(GRBalpha_path, save_folder):
             det = "S2"
             det_col = "b"
 
-        KW_background = get_KW_background(KW_x, KW_Y1, KW_Y2, trig_time, idx_det)
-        GRBalpha_background = get_GRBalpha_background(
-            GRBalpha_x, GRBalpha_Y, trig_time, T90
+        KW_background = get_KW_background(
+            KW_x, KW_Y1, KW_Y2, trig_time, idx_det, GRBalpha_name, limits_dict
         )
-        # print(KW_background)
-        # print(GRBalpha_background)
+        GRBalpha_background = get_GRBalpha_background(
+            GRBalpha_x, GRBalpha_Y, trig_time, T90, GRBalpha_name, limits_dict
+        )
+        print(KW_background, GRBalpha_background)
+        print(trig_time, T90)
+        """
+        event_name = clear_name(GRBalpha_name)
+        print(KW_background, GRBalpha_background)
+        table_file = f"../../data/interim/tables/{event}_plot_info.txt"
+        if index == 0:
+            with open(table_file, "w") as save_file:
+                print(
+                    "{:>20}{:>15}{:>15}{:>15}{:>15}{:>15}{:>15}".format(
+                        "name",
+                        "KW start",
+                        "KW end",
+                        "GRBalpha start",
+                        "GRBalpha end",
+                        "plot start",
+                        "plot end",
+                    ),
+                    file=save_file,
+                )
+        write_plot_info(
+            event_name,
+            trig_time,
+            GRBalpha_x,
+            trig_time,
+            T90,
+            table_file,
+        )
+        """
 
         fig, axis = plt.subplots(3, 1, figsize=(10, 15))
 
@@ -245,6 +329,8 @@ def draw_match(GRBalpha_path, save_folder):
             ["counts/s", "counts/s"],
             [det_col, "k"],
             [KW_background[0], GRBalpha_background[0]],
+            GRBalpha_name,
+            limits_dict,
         )
 
         plot_data(
@@ -257,6 +343,8 @@ def draw_match(GRBalpha_path, save_folder):
             ["counts/s", "counts/s"],
             [det_col, "k"],
             [KW_background[1], GRBalpha_background[1]],
+            GRBalpha_name,
+            limits_dict,
         )
 
         twin = plot_data(
@@ -269,6 +357,8 @@ def draw_match(GRBalpha_path, save_folder):
             ["counts/s", "counts/s"],
             ["r", "b"],
             [KW_S1_background[0], KW_S2_background[0]],
+            GRBalpha_name,
+            limits_dict,
         )
 
         axis[2].set_xlabel(f"seconds since {GRBalpha_date} UT")
@@ -276,6 +366,8 @@ def draw_match(GRBalpha_path, save_folder):
         x_min, x_max = np.min(GRBalpha_x), np.max(GRBalpha_x)
         axis[2].set_xlim(x_min, x_max)
         y_both = np.concatenate((KW_Y1[0], KW_Y1[1]))
+
+        axis[2].set_xlim(limits_dict[GRBalpha_name][4], limits_dict[GRBalpha_name][5])
 
         set_yticks(y_both, axis[2])
         set_yticks(y_both, twin)
@@ -297,8 +389,8 @@ def main():
     Solar_flare_save_folder = "../../reports/figures/Solar flare"
     Solar_flare_path = "../../data/interim/GRBalpha/Solar flare"
 
-    draw_match(GRB_path, GRB_save_folder)
-    draw_match(Solar_flare_path, Solar_flare_save_folder)
+    draw_match(GRB_path, GRB_save_folder, "GRB")
+    # draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
 
 
 if __name__ == "__main__":
