@@ -221,20 +221,30 @@ def write_plot_info(event_name, trig_time, GRBalpha_x, Tpeak, T90, save_file):
         )
 
 
+def get_table_name(file, name):
+    if name.startswith("GRB"):
+        return name
+    index = file[:3]
+    return f"{name} {index}"
+
+
 def draw_match(GRBalpha_path, save_folder, event):
 
     limits_path = f"../../data/interim/tables/{event}_plot_info.txt"
     str_limits_data = read_text_file(limits_path).split("\n")
-    lst_limits_data = [s.split() for s in str_limits_data[1:] if len(s)]
+    lst_limits_data = [
+        [s.strip() for s in line.split("  ") if len(s)]
+        for line in str_limits_data[1:]
+        if len(line)
+    ]
     limits_dict = {}
     for data in lst_limits_data:
-        limits_dict[data[0] + " " + data[1]] = list(map(float, data[2:]))
+        limits_dict[data[0]] = list(map(float, data[1:]))
 
     for index, file in enumerate(os.listdir(GRBalpha_path)):
 
-        if file != "000_GRB 210807A.thc":
+        if file != "044_Solar flare.thc":
             continue
-        print(file)
 
         path = os.path.join(GRBalpha_path, file)
 
@@ -258,6 +268,9 @@ def draw_match(GRBalpha_path, save_folder, event):
         delta = seconds_between_dates(KW_date, GRBalpha_date)
         KW_x += delta
 
+        dict_name = get_table_name(file, GRBalpha_name)
+        print(dict_name, limits_dict[dict_name])
+
         t_start = np.min(GRBalpha_x)
         t_end = np.max(GRBalpha_x)
 
@@ -267,10 +280,10 @@ def draw_match(GRBalpha_path, save_folder, event):
             continue
 
         KW_S1_background = get_KW_background(
-            KW_x, KW_Y1, KW_Y2, trig_time, 0, GRBalpha_name, limits_dict
+            KW_x, KW_Y1, KW_Y2, trig_time, 0, dict_name, limits_dict
         )
         KW_S2_background = get_KW_background(
-            KW_x, KW_Y1, KW_Y2, trig_time, 1, GRBalpha_name, limits_dict
+            KW_x, KW_Y1, KW_Y2, trig_time, 1, dict_name, limits_dict
         )
 
         idx_det = choose_det(KW_S1_background[0], KW_S2_background[0], KW_Y1)
@@ -282,10 +295,10 @@ def draw_match(GRBalpha_path, save_folder, event):
             det_col = "b"
 
         KW_background = get_KW_background(
-            KW_x, KW_Y1, KW_Y2, trig_time, idx_det, GRBalpha_name, limits_dict
+            KW_x, KW_Y1, KW_Y2, trig_time, idx_det, dict_name, limits_dict
         )
         GRBalpha_background = get_GRBalpha_background(
-            GRBalpha_x, GRBalpha_Y, trig_time, T90, GRBalpha_name, limits_dict
+            GRBalpha_x, GRBalpha_Y, trig_time, T90, dict_name, limits_dict
         )
         print(KW_background, GRBalpha_background)
         print(trig_time, T90)
@@ -329,7 +342,7 @@ def draw_match(GRBalpha_path, save_folder, event):
             ["counts/s", "counts/s"],
             [det_col, "k"],
             [KW_background[0], GRBalpha_background[0]],
-            GRBalpha_name,
+            dict_name,
             limits_dict,
         )
 
@@ -343,7 +356,7 @@ def draw_match(GRBalpha_path, save_folder, event):
             ["counts/s", "counts/s"],
             [det_col, "k"],
             [KW_background[1], GRBalpha_background[1]],
-            GRBalpha_name,
+            dict_name,
             limits_dict,
         )
 
@@ -357,7 +370,7 @@ def draw_match(GRBalpha_path, save_folder, event):
             ["counts/s", "counts/s"],
             ["r", "b"],
             [KW_S1_background[0], KW_S2_background[0]],
-            GRBalpha_name,
+            dict_name,
             limits_dict,
         )
 
@@ -367,7 +380,7 @@ def draw_match(GRBalpha_path, save_folder, event):
         axis[2].set_xlim(x_min, x_max)
         y_both = np.concatenate((KW_Y1[0], KW_Y1[1]))
 
-        axis[2].set_xlim(limits_dict[GRBalpha_name][4], limits_dict[GRBalpha_name][5])
+        axis[2].set_xlim(limits_dict[dict_name][4], limits_dict[dict_name][5])
 
         set_yticks(y_both, axis[2])
         set_yticks(y_both, twin)
@@ -378,7 +391,7 @@ def draw_match(GRBalpha_path, save_folder, event):
             bbox_inches="tight",
         )
         plt.close()
-        print(f"Done {clear_name(GRBalpha_name)}")
+        print(f"Done {clear_name(dict_name)}")
 
 
 def main():
@@ -389,8 +402,8 @@ def main():
     Solar_flare_save_folder = "../../reports/figures/Solar flare"
     Solar_flare_path = "../../data/interim/GRBalpha/Solar flare"
 
-    draw_match(GRB_path, GRB_save_folder, "GRB")
-    # draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
+    # draw_match(GRB_path, GRB_save_folder, "GRB")
+    draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
 
 
 if __name__ == "__main__":
