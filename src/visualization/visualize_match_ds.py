@@ -5,7 +5,8 @@ from matplotlib import pyplot as plt
 import datetime
 from matplotlib.ticker import MultipleLocator
 import numpy as np
-
+import math
+from PyAstronomy.pyasl import getAngDist
 
 sys.path.append("..")
 
@@ -16,6 +17,8 @@ from utility import (
     seconds_between_dates,
     clear_name,
     parse_file_name,
+    get_delta,
+    erase_nan,
 )
 
 
@@ -36,24 +39,6 @@ def parse_GRBalpha_data(path):
     Y = np.array([y1, y2])
 
     return date, x, Y, T90
-
-
-def get_delta(y_max, y_min):
-    lst_num = [1, 2, 5]
-    lst_minor = [0.5, 1, 1]
-    n = len(lst_num)
-    delta_y = lst_num[0]
-    delta_minor = lst_minor[0]
-
-    n_ticks = math.floor((y_max - y_min) / delta_y)
-
-    i = 0
-    while n_ticks > 4:
-        delta_y = lst_num[i % n] * 10 ** math.floor(i / n)
-        delta_minor = lst_minor[i % n] * 10 ** math.floor(i / n)
-        n_ticks = math.floor((y_max - y_min) / delta_y)
-        i = i + 1
-    return delta_y, delta_minor
 
 
 def set_yticks(y, ax):
@@ -199,8 +184,9 @@ def get_GRBalpha_background(GRBalpha_x, GRBalpha_Y, Tpeak, T90, name, limits_dic
 
 def choose_det(S1_background, S2_background, KW_Y1):
     # Use G2 energy range
-    S1_max = np.max(KW_Y1[0])
-    S2_max = np.max(KW_Y1[1])
+    S1_max = np.max(erase_nan(KW_Y1[0]))
+    S2_max = np.max(erase_nan(KW_Y1[1]))
+
     if S1_max - S1_background < S2_max - S2_background:
         return 1
     return 0
@@ -225,27 +211,35 @@ def get_table_name(file, name):
     if name.startswith("GRB"):
         return name
     index = file[:3]
-    return f"{name} {index}"
+    return f"{clear_name(name)} {index}"
 
 
-def draw_match(GRBalpha_path, save_folder, event):
-
+def get_limits_dict(event):
     limits_path = f"../../data/interim/tables/{event}_plot_info.txt"
     str_limits_data = read_text_file(limits_path).split("\n")
     lst_limits_data = [
-        [s.strip() for s in line.split("  ") if len(s)]
+        [s.strip() for s in line.split("   ") if len(s)]
         for line in str_limits_data[1:]
         if len(line)
     ]
     limits_dict = {}
     for data in lst_limits_data:
         limits_dict[data[0]] = list(map(float, data[1:]))
+    return limits_dict
 
+
+def get_position_time_delta(date, file):
+    str_delta = read_text_file(file).split("\n")
+    lst_delta = [s.split() for s in str_delta if len(s)]
+    for data in lst_delta:
+        if abs(seconds_between_dates(f"{data[0]} {data[1]}", date)) < 1:
+            return float(data[2])
+    print("NOT", date)
+
+
+def draw_match(GRBalpha_path, save_folder, event):
+    limits_dict = get_limits_dict(event)
     for index, file in enumerate(os.listdir(GRBalpha_path)):
-
-        if file != "044_Solar flare.thc":
-            continue
-
         path = os.path.join(GRBalpha_path, file)
 
         line = read_text_file(path).split("\n")[0]
@@ -253,13 +247,11 @@ def draw_match(GRBalpha_path, save_folder, event):
 
         line = read_text_file(path).split("\n")[1]
         GRBalpha_name = line[line.find(":") + 2 :].strip()
-        # print(f"({GRBalpha_name})")
 
         line = read_text_file(path).split("\n")[2]
         GRBalpha_time = line[line.find(":") + 2 :].strip()
 
         trig_time = seconds_between_dates(GRBalpha_time, GRBalpha_date)
-        # print(trig_time)
 
         nearst_date_path = get_nearest_date(GRBalpha_date)
         KW_date, KW_x, KW_Y1, KW_Y2 = parse_KW_data(nearst_date_path)
@@ -268,8 +260,22 @@ def draw_match(GRBalpha_path, save_folder, event):
         delta = seconds_between_dates(KW_date, GRBalpha_date)
         KW_x += delta
 
+        if event == "Solar flare":
+            position_time_delta = get_position_time_delta(
+                GRBalpha_time, "../../data/solar_flare_delta.txt"
+            )
+        else:
+            position_time_delta = get_position_time_delta(
+                GRBalpha_time, "../../data/GRB_delta.txt"
+            )
+        KW_x += position_time_delta
+
+        NoLoc = position_time_delta == 0
         dict_name = get_table_name(file, GRBalpha_name)
-        print(dict_name, limits_dict[dict_name])
+
+        # if dict_name != "Solar flare 041":
+        #     continue
+        # print(dict_name, position_time_delta)
 
         t_start = np.min(GRBalpha_x)
         t_end = np.max(GRBalpha_x)
@@ -287,7 +293,6 @@ def draw_match(GRBalpha_path, save_folder, event):
         )
 
         idx_det = choose_det(KW_S1_background[0], KW_S2_background[0], KW_Y1)
-
         det = "S1"
         det_col = "r"
         if idx_det == 1:
@@ -300,35 +305,6 @@ def draw_match(GRBalpha_path, save_folder, event):
         GRBalpha_background = get_GRBalpha_background(
             GRBalpha_x, GRBalpha_Y, trig_time, T90, dict_name, limits_dict
         )
-        print(KW_background, GRBalpha_background)
-        print(trig_time, T90)
-        """
-        event_name = clear_name(GRBalpha_name)
-        print(KW_background, GRBalpha_background)
-        table_file = f"../../data/interim/tables/{event}_plot_info.txt"
-        if index == 0:
-            with open(table_file, "w") as save_file:
-                print(
-                    "{:>20}{:>15}{:>15}{:>15}{:>15}{:>15}{:>15}".format(
-                        "name",
-                        "KW start",
-                        "KW end",
-                        "GRBalpha start",
-                        "GRBalpha end",
-                        "plot start",
-                        "plot end",
-                    ),
-                    file=save_file,
-                )
-        write_plot_info(
-            event_name,
-            trig_time,
-            GRBalpha_x,
-            trig_time,
-            T90,
-            table_file,
-        )
-        """
 
         fig, axis = plt.subplots(3, 1, figsize=(10, 15))
 
@@ -384,8 +360,12 @@ def draw_match(GRBalpha_path, save_folder, event):
 
         set_yticks(y_both, axis[2])
         set_yticks(y_both, twin)
-
-        axis[0].set_title(f"{GRBalpha_name}, {GRBalpha_time}")
+        if NoLoc:
+            axis[0].set_title(
+                f"{GRBalpha_name}, {GRBalpha_time}, LOCALIZATION IS NOT AVAILABLE"
+            )
+        else:
+            axis[0].set_title(f"{GRBalpha_name}, {GRBalpha_time}")
         fig.savefig(
             os.path.join(save_folder, f"{parse_file_name(file)}.png"),
             bbox_inches="tight",
@@ -402,8 +382,8 @@ def main():
     Solar_flare_save_folder = "../../reports/figures/Solar flare"
     Solar_flare_path = "../../data/interim/GRBalpha/Solar flare"
 
-    # draw_match(GRB_path, GRB_save_folder, "GRB")
-    draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
+    draw_match(GRB_path, GRB_save_folder, "GRB")
+    # draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
 
 
 if __name__ == "__main__":

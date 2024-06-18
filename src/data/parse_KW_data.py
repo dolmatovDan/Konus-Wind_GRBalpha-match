@@ -23,9 +23,12 @@ def parse_dates(folder):
 
 def get_dates():
     folder_GRB = "../../data/interim/GRBalpha/GRB"
+
     folder_Solar_flare = "../../data/interim/GRBalpha/Solar flare"
-    dates = parse_dates(folder_GRB) + parse_dates(folder_Solar_flare)
-    save_file_name = "../../data/dates.txt"
+    # dates = parse_dates(folder_GRB) + parse_dates(folder_Solar_flare)
+
+    dates = parse_dates(folder_Solar_flare)
+    save_file_name = "../../data/solar_flare_dates.txt"
     with open(save_file_name, "w") as save_file:
         for date in dates:
             print(date, file=save_file)
@@ -57,4 +60,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    get_dates()

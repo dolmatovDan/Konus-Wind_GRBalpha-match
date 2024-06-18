@@ -5,6 +5,7 @@ from dateutil import parser
 from datetime import timedelta
 import numpy as np
 from pathlib import Path
+import math
 
 
 def create_folder(name):
@@ -114,3 +115,21 @@ def get_min_max(arr):
 def parse_file_name(file):
     filename = Path(file).stem
     return filename
+
+
+def get_delta(y_max, y_min):
+    lst_num = [1, 2, 5]
+    lst_minor = [0.5, 1, 1]
+    n = len(lst_num)
+    delta_y = lst_num[0]
+    delta_minor = lst_minor[0]
+
+    n_ticks = math.floor((y_max - y_min) / delta_y)
+
+    i = 0
+    while n_ticks > 4:
+        delta_y = lst_num[i % n] * 10 ** math.floor(i / n)
+        delta_minor = lst_minor[i % n] * 10 ** math.floor(i / n)
+        n_ticks = math.floor((y_max - y_min) / delta_y)
+        i = i + 1
+    return delta_y, delta_minor
