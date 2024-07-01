@@ -48,7 +48,7 @@ def get_tof_grb(date, time, ra, dec):
     ang_distance = getAngDist(wind_ra, wind_dec, ra, dec)
     tof = math.cos(np.deg2rad(ang_distance)) * wind_dist / C
 
-    return -tof
+    return tof
 
 
 def read_text_file(name):

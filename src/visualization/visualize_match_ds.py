@@ -89,6 +89,18 @@ def format_KW_data(x, Y1, Y2, t_start, t_end):
     return np.array(x_f), np.array(Y1_f), np.array(Y2_f)
 
 
+def format_GRBAlpha_data(x, Y, t_start, t_end):
+    x_f = []
+    Y_f = [[], []]
+    for index, time in enumerate(x):
+        if t_start <= time <= t_end:
+            x_f.append(time)
+            Y_f[0].append(Y[0][index])
+            Y_f[1].append(Y[1][index])
+
+    return np.array(x_f), np.array(Y_f)
+
+
 def plot_data(
     ax, x1, Y1, x2, y2, legends, titles, colors, backgrounds, name, limits_dict
 ):
@@ -239,6 +251,7 @@ def get_position_time_delta(date, file):
 
 def draw_match(GRBalpha_path, save_folder, event):
     limits_dict = get_limits_dict(event)
+    # print(sorted(limits_dict.keys()))
     for index, file in enumerate(os.listdir(GRBalpha_path)):
         path = os.path.join(GRBalpha_path, file)
 
@@ -254,6 +267,7 @@ def draw_match(GRBalpha_path, save_folder, event):
         trig_time = seconds_between_dates(GRBalpha_time, GRBalpha_date)
 
         nearst_date_path = get_nearest_date(GRBalpha_date)
+
         KW_date, KW_x, KW_Y1, KW_Y2 = parse_KW_data(nearst_date_path)
         GRBalpha_date, GRBalpha_x, GRBalpha_Y, T90 = parse_GRBalpha_data(path)
 
@@ -272,15 +286,22 @@ def draw_match(GRBalpha_path, save_folder, event):
 
         NoLoc = position_time_delta == 0
         dict_name = get_table_name(file, GRBalpha_name)
+        if dict_name not in limits_dict.keys():
+            continue
 
-        # if dict_name != "Solar flare 041":
+        # if dict_name != "GRB 230307A":
         #     continue
-        # print(dict_name, position_time_delta)
 
-        t_start = np.min(GRBalpha_x)
-        t_end = np.max(GRBalpha_x)
+        # t_start = np.min(GRBalpha_x)
+        # t_end = np.max(GRBalpha_x)
+
+        t_start = limits_dict[dict_name][4]
+        t_end = limits_dict[dict_name][5]
 
         KW_x, KW_Y1, KW_Y2 = format_KW_data(KW_x, KW_Y1, KW_Y2, t_start, t_end)
+        GRBalpha_x, GRBalpha_Y = format_GRBAlpha_data(
+            GRBalpha_x, GRBalpha_Y, t_start, t_end
+        )
 
         if not len(KW_x):
             continue
@@ -382,8 +403,8 @@ def main():
     Solar_flare_save_folder = "../../reports/figures/Solar flare"
     Solar_flare_path = "../../data/interim/GRBalpha/Solar flare"
 
-    draw_match(GRB_path, GRB_save_folder, "GRB")
-    # draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
+    # draw_match(GRB_path, GRB_save_folder, "GRB")
+    draw_match(Solar_flare_path, Solar_flare_save_folder, "Solar flare")
 
 
 if __name__ == "__main__":
